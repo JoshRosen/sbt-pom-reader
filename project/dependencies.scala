@@ -2,8 +2,8 @@ import sbt._
 
 object Dependencies {
 
-  val mvnVersion = "3.0.4"
-  val mvnWagonVersion = "2.2"
+  val mvnVersion = "3.3.3"
+  val mvnWagonVersion = "2.9"
 
   //val aether         = "org.sonatype.aether" % "aether" % "1.13.1"
   val mvnAether           = "org.apache.maven" % "maven-aether-provider" % mvnVersion
