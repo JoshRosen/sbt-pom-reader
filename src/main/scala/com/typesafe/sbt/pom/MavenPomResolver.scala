@@ -14,7 +14,7 @@ class MavenPomResolver(localRepo: File) {
       userPropsMap: Map[String, String]): Model = {
 
     val session = new MavenWorkingSessionImpl().loadPomFromFile(pomFile, activeProfiles: _*)
-    val field = classOf[MavenWorkingSessionImpl].getField("model")
+    val field = classOf[MavenWorkingSessionImpl].getDeclaredField("model")
     field.setAccessible(true)
     val model = field.get(session).asInstanceOf[Model]
     model
