@@ -1,15 +1,7 @@
 package com.typesafe.sbt.pom
 
 import sbt._
-import Keys._
-import org.apache.maven.model.{
-  Model => PomModel,
-  Plugin => PomPlugin,
-  Dependency => PomDependency,
-  Repository => PomRepository
-}
-import Project.Initialize
-import SbtPomKeys._
+import org.apache.maven.model.{Model => PomModel}
 import collection.JavaConverters._
 
 /** This object knows how to load maven reactor projects and turn them into sbt projects. */
