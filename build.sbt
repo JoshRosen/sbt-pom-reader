@@ -1,16 +1,19 @@
+import sbtrelease.ReleasePlugin.autoImport._
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
 name := "sbt-pom-reader"
 
-organization := "com.typesafe.sbt"
+organization := "org.spark-project"
 
 sbtPlugin := true
 
-publishMavenStyle := false
+publishMavenStyle := true
 
 libraryDependencies ++= Dependencies.pluginDependencies
 
-git.baseVersion := "1.0"
+scalacOptions ++= Seq("-target:jvm-1.6")
 
-versionWithGit
+javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
 scriptedLaunchOpts <+= version apply { v => "-Dproject.version="+v }
 
@@ -26,8 +29,44 @@ scriptedSettings
 
 scriptedLaunchOpts <+= version apply { v => "-Dproject.version="+v }
 
-publishTo <<= (version) { v =>
-  def scalasbt(repo: String) = ("scalasbt " + repo, "http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-" + repo)
-  val (name, repo) = if (v.endsWith("-SNAPSHOT")) scalasbt("snapshots") else scalasbt("releases")
-  Some(Resolver.url(name, url(repo))(Resolver.ivyStylePatterns))
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (version.value.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
+
+publishArtifact in Test := false
+
+pomIncludeRepository := { _ => false }
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
+
+useGpg := true
+
+pomExtra := (
+  <url>https://github.com/joshrosen/sbt-pom-reader</url>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>git@github.com:JoshRosen/sbt-pom-reader.git</url>
+    <connection>scm:git:git@github.com:JoshRosen/sbt-pom-reader.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>JoshRosen</id>
+      <name>Josh Rosen</name>
+      <url>https://github.com/JoshRosen</url>
+    </developer>
+    <developer>
+      <id>ScrapCodes</id>
+      <name>Prashant Sharma</name>
+      <url>https://github.com/ScrapCodes</url>
+    </developer>
+  </developers>)

@@ -8,6 +8,10 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "0.7.1")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.2")
 
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.1")
+
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.0")
+
 libraryDependencies <+= (sbtVersion) { sv =>
   "org.scala-sbt" % "scripted-plugin" % sv
 }
